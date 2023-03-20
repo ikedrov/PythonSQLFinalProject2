@@ -64,12 +64,13 @@ class SqlMobile:
             tariff_premium = tariff_info_result[2][0]
             print(tariff_standard, tariff_vip, tariff_premium)
 
+            cur.execute(
+                '''SELECT UserID, User_name, Balance, Mobile_tariff_ref, Activity FROM mobile_users LEFT JOIN mobile_tariff ON UserID = TariffID''')
+            db.commit()
+            # for i in range(int(months)):
+            #     if mobile_balance_user1 >= tariff_vip:
+            #         mobile_balance_user1 -= tariff_vip
 
-            for i in range(int(months)):
-                if mobile_balance_user1 >= tariff_vip:
-                    mobile_balance_user1 -= tariff_vip
-                    cur.execute('''UPDATE mobile_users LEFT JOIN mobile_tariff ON mobile_users.Mobile_tariff_ref = mobile_tariff.TariffID SET Balance = Balance - Price WHERE mobile_tariff.TariffID = 2''')
-                    db.commit()
 
 
 
