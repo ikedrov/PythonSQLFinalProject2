@@ -52,24 +52,41 @@ class SqlMobile:
             cur = db.cursor()
             cur.execute(f'''SELECT Balance FROM mobile_users''')
             balance_info_result = cur.fetchall()
-            mobile_balance_user1 = balance_info_result[0][0]
-            mobile_balance_user2 = balance_info_result[1][0]
-            mobile_balance_user3 = balance_info_result[2][0]
-            print(mobile_balance_user1, mobile_balance_user2, mobile_balance_user3)
+
+            # mobile_balance_user1 = balance_info_result[0][0]
+            # mobile_balance_user2 = balance_info_result[1][0]
+            # mobile_balance_user3 = balance_info_result[2][0]
+            mobile_balance_users = [balance_info_result[0][0], balance_info_result[1][0], balance_info_result[2][0]]
+            print(mobile_balance_users)
 
             cur.execute(f'''SELECT Price FROM mobile_tariff''')
             tariff_info_result = cur.fetchall()
-            tariff_standard = tariff_info_result[0][0]
-            tariff_vip = tariff_info_result[1][0]
-            tariff_premium = tariff_info_result[2][0]
-            print(tariff_standard, tariff_vip, tariff_premium)
+            # tariff_standard = tariff_info_result[0][0]
+            # tariff_vip = tariff_info_result[1][0]
+            # tariff_premium = tariff_info_result[2][0]
+            tariffs = [tariff_info_result[0][0], tariff_info_result[1][0], tariff_info_result[2][0]]
+            print(tariffs)
 
-            cur.execute(
-                '''SELECT UserID, User_name, Balance, Mobile_tariff_ref, Activity FROM mobile_users LEFT JOIN mobile_tariff ON UserID = TariffID''')
-            db.commit()
-            # for i in range(int(months)):
-            #     if mobile_balance_user1 >= tariff_vip:
-            #         mobile_balance_user1 -= tariff_vip
+
+            for i in range(int(months)):
+                try:
+                    if mobile_balance_users[0] >= tariffs[1]:
+                        cur.execute(f'''UPDATE mobile_users SET Balance = Balance -  mobile_tariff.Price  FROM mobile_tariff  WHERE  mobile_users.Mobile_tariff_ref = mobile_tariff.TariffID AND UserID = 1''')
+                        db.cursor()
+                        mobile_balance_users[0] -= tariffs[1]
+                        print(f'Ваш баланс {mobile_balance_users[0]}')
+                    else:
+                        cur.execute(f'''UPDATE mobile_users SET Activity = "No" WHERE UserID = 1''')
+                        print('Недостаточно средств не счете')
+                        break
+                except:
+                    print('Неверный ввод')
+                    break
+
+
+
+
+
 
 
 
