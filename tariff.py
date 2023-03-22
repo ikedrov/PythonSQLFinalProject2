@@ -13,13 +13,13 @@ class Tariff:
         SqlMobile.add_tariff(('Standard', 500))
         SqlMobile.add_tariff(('VIP', 1000))
         SqlMobile.add_tariff(('Premium', 1500))
+
         months = input('Введите период расчета: ')
-        # SqlMobile.change_balance(months)
 
-
-
-
-
+        try:
+            SqlMobile.change_balance(months)
+        except:
+            print('Введено не число')
 
 
 
